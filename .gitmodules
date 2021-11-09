@@ -5,3 +5,6 @@
 	path = lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
     ignore = dirty
+[submodule "lib/nova-interfaces"]
+	path = lib/nova-interfaces
+	url = https://github.com/rari-capital/nova-interfaces
