@@ -1,14 +1,22 @@
-# <h1 align="center"> DappTools Template </h1>
+# <h1 align="center"> Nova Strategy </h1>
 
-**Template repository for getting started quickly with DappTools**
+**How it Works**
 
-![Github Actions](https://github.com/gakonst/dapptools-template/workflows/Tests/badge.svg)
+This strategy allows nova relayers to return data from a call on l1 back to l2. 
+
+-Note: The nova protocol is in closed beta and is not yet publicy available so this software may or may not work.
+
+[Nova docs](https://docs.rari.capital/nova/)
+
+[Nova github repo](https://github.com/Rari-Capital/nova)
+
+![Github Actions](https://github.com/0xNonso/nova-strategy/workflows/Tests/badge.svg)
 
 ## Building and testing
 
 ```sh
-git clone https://github.com/gakonst/dapptools-template
-cd dapptools-template
+git clone https://github.com/0xNonso/nova-strategy
+cd nova-strategy
 make # This installs the project's dependencies.
 make test
 ```

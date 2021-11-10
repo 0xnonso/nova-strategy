@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {CrossDomainMessenger} from "lib/nova-interfaces/src/CrossDomainMessenger.sol";
-import {Trust} from "lib/solmate/src/auth/Trust.sol";
+import {CrossDomainMessenger} from "@nova-interfaces/CrossDomainMessenger.sol";
+import {Trust} from "@solmate/auth/Trust.sol";
+// lib/nova-interfaces/lib/solmate/src/auth/Trust.sol
 
 contract Strategy is Trust {
 
@@ -10,7 +11,7 @@ contract Strategy is Trust {
 
     mapping(address => bool) whitelistedRelayers;
 
-    constructor (address _cdm) Trust(msg.sender){
+    constructor (address _cdm){
         L1_CDM = CrossDomainMessenger(_cdm);
     }
 

@@ -1,2 +1,4 @@
 @openzeppelin/=lib/openzeppelin-contracts/
 ds-test/=lib/ds-test/src/
+@solmate/=lib/nova-interfaces/lib/solmate/src/
+@nova-interfaces=lib/nova-interfaces/src/
