@@ -2,20 +2,32 @@
 pragma solidity ^0.8.0;
 
 import {CrossDomainMessenger} from "lib/nova-interfaces/src/CrossDomainMessenger.sol";
+import {Trust} from "lib/solmate/src/auth/Trust.sol";
 
-contract Strategy {
+contract Strategy is Trust {
 
     CrossDomainMessenger L1_CDM;
 
-    address[] public whitelistedRelayers;
+    mapping(address => bool) whitelistedRelayers;
 
-    constructor (address _cdm) {
+    constructor (address _cdm) Trust(msg.sender){
         L1_CDM = CrossDomainMessenger(_cdm);
     }
 
-    function whiteListRelayer(address _addr) public {
+    /// @notice whitelists a relayer address
+    /// @dev only trusted user can call function  
+    /// @param _addr relayer address to be whitelisted 
+    function whiteListRelayer(address _addr) public requiresTrust {
         require(!isWhitelistedRelayer(_addr), "ALREADY_WHITELISTED");
-        whitelistedRelayers.push(_addr);
+        whitelistedRelayers[_addr] = true;
+    }
+
+    /// @notice blacklists an already whitelisted relayer address
+    /// @dev only trusted user can call function  
+    /// @param _addr relayer address to be blacklisted 
+    function blackListRelayer(address _addr) public requiresTrust {
+        require(isWhitelistedRelayer(_addr), "NOT_WHITELISTED");
+        whitelistedRelayers[_addr] = false;
     }
 
     /// @notice Implements how a strategy is executed with specific calldata.
@@ -46,10 +58,11 @@ contract Strategy {
     }
 
 
+    /// @notice checks if an address is currently whitelisted 
+    /// @param _addr address to check
+    /// @return bool  
     function isWhitelistedRelayer(address _addr) public view returns(bool) {
-        for(uint i=0; i < whitelistedRelayers.length; i++){
-            if (whitelistedRelayers[i] == _addr) return true;
-        }
-        return false;
+        return whitelistedRelayers[_addr];
     }
+
 }
