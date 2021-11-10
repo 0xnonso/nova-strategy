@@ -8,3 +8,6 @@
 [submodule "lib/nova-interfaces"]
 	path = lib/nova-interfaces
 	url = https://github.com/rari-capital/nova-interfaces
+[submodule "lib/solmate"]
+	path = lib/solmate
+	url = https://github.com/rari-capital/solmate
