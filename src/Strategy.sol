@@ -2,12 +2,13 @@
 pragma solidity ^0.8.0;
 
 import {CrossDomainMessenger} from "@nova-interfaces/CrossDomainMessenger.sol";
-import {Trust} from "@solmate/auth/Trust.sol";
-// lib/nova-interfaces/lib/solmate/src/auth/Trust.sol
+import {Trust} from "solmate/auth/Trust.sol";
+
 
 contract Strategy is Trust {
 
     CrossDomainMessenger L1_CDM;
+
 
     mapping(address => bool) whitelistedRelayers;
 
@@ -15,13 +16,39 @@ contract Strategy is Trust {
         L1_CDM = CrossDomainMessenger(_cdm);
     }
 
+    /// =========================================== EVENTS ============================================
+    /// ===============================================================================================
+
+    /// @notice Emitted when a relayer is whitelisted
+    /// @param addr Address whitelisted
+    event WhiteList(address addr);
+
+    /// @notice Emitted when a relayer is blacklisted
+    /// @param addr Addres blacklisted 
+    event BlackList(address addr);
+
+    /// @notice Emitted when strategy sends returndata to target on L2
+    /// @param addr Target
+    /// @param data return data
+
+    event SendDataToL2(address addr, bytes data);
+
+
+
+    /// =========================================== STATE =============================================
+    /// ========================================= FUNCTIONS ===========================================
+
+
     /// @notice whitelists a relayer address
     /// @dev only trusted user can call function  
     /// @param _addr relayer address to be whitelisted 
     function whiteListRelayer(address _addr) public requiresTrust {
         require(!isWhitelistedRelayer(_addr), "ALREADY_WHITELISTED");
         whitelistedRelayers[_addr] = true;
+
+        emit WhiteList(_addr);
     }
+
 
     /// @notice blacklists an already whitelisted relayer address
     /// @dev only trusted user can call function  
@@ -29,7 +56,10 @@ contract Strategy is Trust {
     function blackListRelayer(address _addr) public requiresTrust {
         require(isWhitelistedRelayer(_addr), "NOT_WHITELISTED");
         whitelistedRelayers[_addr] = false;
+
+        emit BlackList(_addr);
     }
+
 
     /// @notice Implements how a strategy is executed with specific calldata.
     /// @notice This call only returns data from non-state changing calls  
@@ -56,7 +86,13 @@ contract Strategy is Trust {
             abi.encodeWithSelector(l2_funcSelector, returnData),
             _gasLimit
         );
+
+        emit SendDataToL2(l2_target, _data);
     }
+
+
+    /// =========================================== VIEW =============================================
+    /// ======================================== FUNCTIONS ===========================================
 
 
     /// @notice checks if an address is currently whitelisted 
