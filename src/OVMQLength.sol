@@ -69,7 +69,7 @@ contract OVMQLength {
 
         NOVA_REGISTRY.requestExec(
         address(STRATEGY),
-        abi.encodeWithSelector(IOVM_CTC.getQueueLength.selector, l1_calldata),
+        abi.encodeWithSelector(IStrategy.SendDataToL2.selector, l1_calldata),
         _cdmGasLimit_,
         _gasPrice,
         _tip,
